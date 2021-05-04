@@ -1,0 +1,164 @@
+<body>
+<img id=mugi src="./resource/img/mugi/0.png" style="position: absolute; left: 100px; top: 200px;">
+<span id=cha_title style="position:absolute; left: 20px; top: 40px;">정보</span>
+
+<span id=cha_mugi style="position:absolute; left: 20px; top: 100px;">무기</span>
+<span id=cha_atk style="position:absolute; left: 220px; top: 100px;">공격력</span>
+<span id=cha_gang style="position:absolute; left: 350px; top: 100px;">강화</span>
+<script id=script1 src="./resource/function/list.js"></script>
+<script>
+var rank_gang = 0;
+var rank_name = '';
+
+//var choice = prompt("");
+var name = prompt("");
+var matT = [0,0,0,0,0,0,0];
+var mT = 0;
+
+openFile(name);
+
+
+/*
+if(choice ==1){
+openFile(name);
+} else {
+openFile2(name);
+}
+*/
+
+
+loadFile();
+
+
+function base64Decode(str) {
+
+  var enc64list, dec64list;
+  enc64list = new Array();
+  dec64list = new Array();
+    
+    for(var i=0; i<26; i++) {
+    enc64list[enc64list.length] = String.fromCharCode(65+i);
+    }
+    for(var i=0; i<26; i++) {
+    enc64list[enc64list.length] = String.fromCharCode(97+i);
+    }
+    for(var i=0; i<10; i++) {
+    enc64list[enc64list.length] = String.fromCharCode(48+i);
+    }
+    enc64list[enc64list.length]="+";
+    enc64list[enc64list.length]="/";
+    for(var i=0; i<128; i++) {
+    dec64list[dec64list.length]= -1;
+    }
+    for(var i=0; i<64; i++) {
+    dec64list[enc64list[i].charCodeAt(0)] = i;
+    }
+    
+   var c=0,d=0,e=0,f=0,i=0,n=0;
+   var input = str.split("");
+   var output = "";
+   var ptr = 0;
+   do {
+      f = input[ptr++].charCodeAt(0);
+      i = dec64list[f];
+      if( f >= 0 && f < 128 && i != -1) {
+        if(n % 4 == 0) {
+            c = i << 2;
+        } else if ( n % 4 == 1) {
+            c = c | (i >> 4);
+            d = (i & 0x0000000F ) << 4;
+        } else if ( n % 4 == 2) {
+            d = d | (i >> 2);
+            e = ( i & 0x00000003 ) << 6;
+        } else {
+            e = e | i;
+        }
+        n++;
+        if(n%4==0) {
+           output += String.fromCharCode(c) +
+                     String.fromCharCode(d) +
+                     String.fromCharCode(e);
+        }
+       }
+      }
+     while(typeof input[ptr] != "undefined");
+     output += (n % 4 == 3) ? String.fromCharCode(c) + String.fromCharCode(d) :
+                ((n % 4 ==2) ? String.fromCharCode(c) : "");
+                return output;
+ }
+
+function loadFile(){
+    rank_gang = mT;
+}
+
+function openFile(name)
+{
+
+    var fileName = document.URL.toString().substring(7);
+    fileName = fileName.substring(0,fileName.indexOf("!"))+"save\\"+name;
+    var fileObject = new ActiveXObject("Scripting.FileSystemObject");
+    if(!fileObject.FileExists(fileName))
+{
+    alert("세이브파일이 없습니다");
+} else {
+var fOpen = fileObject.OpenTextFile(fileName,1);
+    temp = fOpen.ReadLine();
+
+    temp = fOpen.ReadLine();
+    mT = Number(base64Decode(temp.substring(0,temp.indexOf("!"))));
+    for(var i=0; i<6; i++){
+    temp = fOpen.ReadLine();
+    matT[i] = Number(base64Decode(temp.substring(0,temp.indexOf("#"))));
+    }
+    
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+
+
+    fOpen.close();
+
+}
+    
+
+}
+
+function openFile2(name)
+{
+
+    var fileName =  "ftp:\\\\24.36.102.19\\Intel"+name
+    var fileObject = new ActiveXObject("Scripting.FileSystemObject");
+    if(!fileObject.FileExists(fileName))
+{
+    alert("세이브파일이 없습니다");
+} else {
+var fOpen = fileObject.OpenTextFile(fileName,1);
+    temp = fOpen.ReadLine();
+
+    temp = fOpen.ReadLine();
+    mT = Number(base64Decode(temp.substring(0,temp.indexOf("!"))));
+    for(var i=0; i<6; i++){
+    temp = fOpen.ReadLine();
+    matT[i] = Number(base64Decode(temp.substring(0,temp.indexOf("#"))));
+    }
+    
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+    temp = fOpen.ReadLine();
+
+
+    fOpen.close();
+
+}
+    
+
+}
+document.getElementById("cha_title").innerHTML = "["+name+"] 님의 정보입니다.";
+//document.getElementById("cha_name").innerHTML = name;
+document.getElementById("cha_mugi").innerHTML = ""+ mugi[rank_gang].name;
+document.getElementById("cha_atk").innerHTML = "공격력 "+ mugi[rank_gang].atk;
+document.getElementById("cha_gang").innerHTML = "강화 +"+ rank_gang;
+document.getElementById("mugi").src="./resource/img/mugi/"+mugi[rank_gang].id+".png";
+</script>

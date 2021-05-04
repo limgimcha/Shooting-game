@@ -1,0 +1,1515 @@
+<!doctype html>
+<head>
+<title>!DARK SMITH</title>
+    <style>
+	.tooltip { 
+		display: inline-block; 
+}
+	.tooltip .tooltip-content {
+		visibility: hidden;
+		width: 300px;
+		background-color:gray;
+		padding: 0;
+		margin-top: 10px;
+		color: white;
+		text-align: center;
+		position: absolute;
+		z-index: 6;
+}
+	.tooltip .tooltip-content2 {
+		visibility: hidden;
+		width: 70px;
+		padding: 0;
+		margin-top: 10px;
+		color: white;
+		text-align: center;
+		position: absolute;
+		z-index: 6;
+}
+	.tooltip:hover .tooltip-content { visibility: visible; }
+	.tooltip:hover .tooltip-content2 { visibility: visible; }
+    </style>
+</head>
+
+<body>
+    <form id=login style="display: block;">
+        <img id=bg src="./resource/img/ui/bg.png" style="position: absolute; left: 50px; top: 150px;" onclick="">
+        <img id=bg1 src="./resource/img/ui/bg1.png" style="position: absolute; left: 50px; top: 450px;" onclick="">
+        <span id=ment style="position:absolute; left: 100px; top: 400px;">아이디와 비밀번호를 입력하세요. [자동회원가입됩니다]<br>[A약공격/왼클릭강공격]<br /></span>
+        <input id="id-input" style="position: absolute; left: 200px; top: 480px; width: 200px;">
+        <input id="ps-input" type="password" style="position: absolute; left: 200px; top: 535px; width: 200px;">
+    </form>
+
+    <button id="login-button" style="position: absolute; left: 420px; top: 540px; display: block">로그인</button>
+
+    <form id=base style="display: none;">
+        <img id=lose src="./resource/img/ui/lose.gif" style="position: absolute; left: 0px; top: 0px; z-index:5; opacity:0.5; display: none;" onclick="">
+        <img id=mugi src="./resource/img/mugi/0.png" style="position: absolute; left: 100px; top: 100px;">
+        <img id=back src="./resource/img/ui/bg0.png" style="position: absolute; left: 10px; top: 10px; z-index:-1;">
+        <img id=d0 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 100px; top: 700px;" onclick="monster_id=0;monster_max_ball=50;dungeon();">
+        <img id=d1 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 200px; top: 700px;" onclick="monster_id=1;monster_max_ball=100;dungeon();">
+        <img id=d2 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 300px; top: 700px;" onclick="monster_id=2;monster_max_ball=140;dungeon();">
+        <img id=d3 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 100px; top: 750px;" onclick="monster_id=3;monster_max_ball=190;dungeon();">
+        <img id=d4 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 200px; top: 750px;" onclick="monster_id=4;monster_max_ball=230;dungeon();">
+        <img id=d5 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 300px; top: 750px;" onclick="monster_id=5;monster_max_ball=260;dungeon();">
+        <img id=d6 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 100px; top: 800px;" onclick="monster_id=6;monster_max_ball=300;dungeon();">
+        <img id=d7 src="./resource/img/dungeon/d0.png" style="position: absolute; left: 200px; top: 800px;" onclick="monster_id=7;monster_max_ball=200;dungeon();">
+        <img id=button1 src="./resource/img/button/0.png" style="position: absolute; left: 400px; top: 150px;" onclick="ganghwa();">
+        <img id=button2 src="./resource/img/button/3.png" style="position: absolute; left: 520px; top: 150px;" onclick="goShop();">
+        <img id=save src="./resource/img/button/2.png" style="position: absolute; left: 400px; top: 200px;" onclick="">
+        <img id=smith src="./resource/img/ui/0.png" style="position: absolute; left: 200px; top: 200px; display: none;" onclick="">
+        <img id=what_garu src="./resource/img/ui/g0.png" style="position: absolute; left: 10px; top: 200px;" onclick="">
+
+
+        <span id=mugi_atk style="position:absolute; left: 100px; top: 40px;">무기공격력</span>
+        <span id=mugi_name style="position:absolute; left: 100px; top: 20px;">무기이름</span>
+        <span id=mugi_detail style="position:absolute; left: 100px; top: 60px; width: 550">무기설명</span>
+        <span id=mat_detail style="position:absolute; left: 400px; top: 110px;">[재료]</span>
+        <span id=gold style="position:absolute; left: 400px; top: 330px;">[골드]</span>
+        <span id=mat0 style="position:absolute; left: 400px; top: 350px;" onClick="minus_mat(0);">[모운의증표]</span>
+        <span id=mat1 style="position:absolute; left: 400px; top: 370px;">[달인의 지푸라기]</span>
+        <span id=mat2 style="position:absolute; left: 400px; top: 390px;">[이루실의 서림]</span>
+        <span id=mat3 style="position:absolute; left: 400px; top: 410px;">[심판자의 재]</span>
+        <span id=mat4 style="position:absolute; left: 400px; top: 430px;">[볼드의 결정조각]</span>
+        <span id=mat5 style="position:absolute; left: 400px; top: 450px;">[쐐기석]</span>
+        <span id=mat6 style="position:absolute; left: 400px; top: 470px;">[무희의 천 조각]</span>
+        <span id=mat7 style="position:absolute; left: 400px; top: 490px;">[금 반지]</span>
+        <span id=mat8 style="position:absolute; left: 400px; top: 510px;">[프리데의 영혼]</span>
+        <span id=mat9 style="position:absolute; left: 400px; top: 530px;">[토마스의 불꽃조각]</span>
+        <span id=invent style="position:absolute; left: 400px; top: 300px;">[인벤토리]</span>
+    </form>
+
+    <form id="shop" style="display: none;">
+
+        <span id=inven onclick="inven()">[인벤토리확장+] <font color=gold>G: 200만</font><br></span>
+
+        <div class="tooltip">
+            <span id=inven onclick="myNowGaru=1; garu_dis();">[송진가루] <font color=gold>G: 300만</font><br></span>
+            <div class="tooltip-content" style="position: absolute; left: 312px; top: 490px;">
+                <span id="nexInfo" style="color: white;">불의 힘을 무기에 깃들인다. 특정 몬스터들을 잡을 때 데미지가 강해진다.</span>
+            </div>
+        </div>
+
+        <div class="tooltip">
+            <span id=inven onclick="myNowGaru=2; garu_dis();">[번개부싯깃] <font color=gold>G: 300만</font><br></span>
+            <div class="tooltip-content" style="position: absolute; left: 312px; top: 490px;">
+                <span id="nexInfo" style="color: white;">번개의 힘을 무기에 깃들인다. 특정 몬스터들을 잡을 때 데미지가 강해진다.</span>
+            </div>
+        </div>
+
+
+        <span id=inven onclick="exit()"><br>나가기</span>
+    </form>
+
+    <form id=dungeon style="display: none;">
+        <img id=d00 src="./resource/img/dungeon/d00t.png" style="position: absolute; left: 0px; top: 0px; z-index:-1;" onclick="">
+        <img id=bg01 src="./resource/img/ui/bg01.png" style="position: absolute; left: 10px; top: 360px; z-index:-1;" onclick="">
+        <img id=e00 src="./resource/img/dungeon/exit.png" style="position: absolute; left: 650px; top: 500px;" onclick="exit();">
+        <img id=ta src="./resource/img/ta/0.gif" style="position: absolute; left: 150px; top: 500px; display: none;" onclick="">
+        <img id=ta0 src="./resource/img/ta/1.gif" style="position: absolute; left: 150px; top: 500px; display: none;" onclick="">
+        <img id=ta2 src="./resource/img/ta/t.png" style="position: absolute; left: 0px; top: 0px; display: none; opacity: 0;" onclick="">
+        <span id=monster_name style="position:absolute; left: 150px; top: 370px;">보스이름</span>
+        <span id=monster_hp style="position:absolute; left: 200px; top: 410px;">HP</span>
+        <span id=damage style="position:absolute; left: 340px; top: 430px;">-데미지</span>
+        <span id=ball_table style="position:absolute; top: 0px; display: none;"></span>
+        <span id=skill style="position:absolute; left: 650px;top: 20px; display: block;">[스킬Z]OFF/[메시지끄기Enter]</span>
+        <img id=die_patt1 src="./resource/img/ta/3.gif" style="position: absolute; left: 0px; top: 0px; display: none;" onclick="">
+        <img id=die_patt2 src="./resource/img/ta/2.gif" style="position: absolute; left: 0px; top: 0px; display: none;" onmouseleave="">
+        <img id=die_patt3 src="./resource/img/ta/5.gif" style="position: absolute; left: 0px; top: 0px; display: none; z-index:-1;" onclick="">
+        <img id=character src="./r/c.gif" style="position:absolute; top: 780px; left: 200px; display: none;">
+    </form>
+
+    <form id=message_popup style="position: absolute; left: 100px; top: 600px; display: none; z-index:8;">
+        <img id=message_popup src="./resource/img/ui/ms.png" style="position: absolute; left: 0px; top: 0px; z-index:5;" onclick="dialogText();">
+        <img id=X2 src="./resource/img/ui/x.png" style="position: absolute; left: 422px; top: 0px; " onclick="">
+        <span id=message style="position: absolute; left: 30px; top: 30px; color: white; z-index: 7; width: 380px;">[메시지창은클릭]</span>
+    </form>
+
+    <img id=mouse_cursor_t src="./resource/img/ta/mouse.gif" style="position: absolute; left: 0px; top: 0px;">
+
+    <script id=script1 src="./resource/function/list.js"></script>
+    <script id=script2 src="./resource/function/monster.js"></script>
+    <script id=script3 src="./resource/function/saveload.js"></script>
+    <script id=script4 src="./resource/function/fd.js"></script>
+    <script>
+
+        document.body.background = "./resource/img/ui/bg2.png";
+
+        var muhee_first = 0;
+        var gud = 0;
+        var gunda_first = 0;
+        var iru = 0;
+        var irusil_first = 0;
+        var shield = 0;
+        var mp = 0;
+        var heo = 0;
+        var myInv = 0;
+        var id = '';
+        var ps = '';
+        var gold = 0;
+        var inventoryMax = 100;
+        var pT = '';
+        var cnt = 0;
+        var what_gang = 0;
+        var monster_id = 0;
+        var mouse_point_x = 0;
+        var mouse_point_y = 0;
+        var monster = [{
+            name: '',
+            hp: 500,
+            maxHp: 500,
+            def: 500,
+            id: 0
+        }];
+
+        var item = [0];
+        var mr = 0; //무력화
+        var firstMat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        var cl = 0;
+        var intervals = 0;
+        var mugiNow = mugi[0];
+        var text = '';
+        var name = '';
+        var password = '';
+        var dungeonEnter = 0;
+        var mat = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        // 0 - 모운 1- 달인 2- 이루실 3- 군다 4-볼드 5-쐐기석 6- 무희의 천 조각 7- 금 반지 8- 프리데의 심장 9- 토마스의 불꽃조각
+        var garu = [0, 0, 0, 0, 0]; //1-불 2-번개 3-암흑 4-독
+        var myNowGaru = 0;
+
+        document.addEventListener('mousemove', character_pos);
+        document.addEventListener('keydown', on_key_down);
+
+        document.getElementById("d00").onclick = function (e) {
+            var x = event.clientX;
+            var y = event.clientY;
+            cl = 1;
+            document.getElementById("ta0").style.left = event.clientX - 200;
+            document.getElementById("ta0").style.top = event.clientY - 50;
+            document.getElementById("ta0").style.display = "block";
+            document.getElementById("d00").src = "./resource/img/dungeon/d0" + monster_id + ".png";
+            attack();
+
+            setTimeout(function () {
+                document.getElementById("ta0").style.display = "none";
+                document.getElementById("d00").src = "./resource/img/dungeon/d0" + monster_id + "t.png";
+                cl = 0;
+            }, 100);
+        }
+
+
+
+        document.getElementById("X2").onclick = function () {
+            document.getElementById("message_popup").style.display = "none";
+        }
+
+        document.getElementById("save").onclick = function () {
+            //name = prompt("");
+            //password = prompt("");
+
+            document.getElementById("save").src = "./resource/img/button/2a.png";
+            setTimeout(function () {
+                document.getElementById("save").src = "./resource/img/button/2.png";
+            }, 500);
+            writeFile(id, what_gang, ps, mat, gold, inventoryMax, myInv, heo);
+            pT = password;
+        }
+
+        /*
+        document.getElementById("open").onclick = function(){
+                name = prompt("");
+                password = prompt("");
+                openFile(name,password);
+                loadFile();
+        }
+        */
+
+        document.getElementById("e00").onclick = function () {
+            exit();
+        }
+
+
+        document.getElementById('login-button').onclick = function () {
+            id = document.getElementById('id-input').value;
+            ps = document.getElementById('ps-input').value;
+            openFile(id, ps);
+            loadFile();
+            var fileName = document.URL.toString().substring(7);
+            fileName = fileName.substring(0, fileName.indexOf("!")) + "\\save\\" + id;
+            var fileObject = new ActiveXObject("Scripting.FileSystemObject");
+            if (!fileObject.FileExists(fileName)) {
+                alert("세이브파일이 없습니다. 새로 시작합니다.");
+                writeFile(id, 0, ps, firstMat, 0, 100, 0, 0);
+            }
+
+            document.getElementById("login").style.display = 'none';
+            document.getElementById("login-button").style.display = 'none';
+            document.getElementById("base").style.display = 'block';
+            
+
+        };
+
+        function dialog() {
+            document.getElementById("message_popup").style.display = "block";
+        }
+
+        function dialogText() {
+            var i = 0;
+            document.getElementById("message").innerHTML = text.substring(0, cnt) + "_";
+            cnt++
+            timer1 = setTimeout('dialogText()', 70);
+            if (text.length < cnt) {
+                clearTimeout(timer1);
+                cnt = 0;
+            }
+        }
+
+        function mouse_cur() {
+
+        }
+
+        function inven() {
+            if (gold >= 2000000) {
+                text = '인벤토리가 한 칸 확장 되었다.';
+                dialog();
+                dialogText();
+                inventoryMax++;
+                gold -= 2000000;
+            } else {
+                text = '돈이 없다..';
+                dialog();
+                dialogText();
+            }
+        }
+
+        function minus_mat(mat_num) {
+            if (mat[mat_num] > 0) {
+                mat[mat_num]--;
+            } else {
+                alert("없다!");
+            }
+        }
+
+
+        function garu_dis() {
+            if (gold > 3000000) {
+                gold -= 3000000;
+                if (myNowGaru == 1) {
+                    document.getElementById("what_garu").src = "./resource/img/ui/g1.png";
+                    document.getElementById("ta").src = "./resource/img/ta/01.gif";
+                    text = "검에 불꽃이 일렁인다.";
+                    dialog();
+                    dialogText();
+                } else if (myNowGaru == 2) {
+                    document.getElementById("what_garu").src = "./resource/img/ui/g2.png";
+                    document.getElementById("ta").src = "./resource/img/ta/02.gif";
+                    text = "스파크!";
+                    dialog();
+                    dialogText();
+                }
+            } else {
+
+                text = "돈이 없다..";
+                dialog();
+                dialogText();
+            }
+        }
+
+        function on_key_down(e) {
+            var keycode = event.keyCode;
+            //console.log(keycode);
+
+            try {
+                if (openWin.closed == false)
+                    return;
+            } catch (Exception) { ; }
+            if (keycode == 13) {
+                document.getElementById("message_popup").style.display = "none";
+            }
+
+            else if (keycode == 37) {
+                var X = parseFloat(document.getElementById("character").style.left);
+                X -= 10;
+                document.getElementById("character").style.left = X + 'px';
+            }
+
+            else if (keycode == 39) {
+
+                var X = parseFloat(document.getElementById("character").style.left);
+                X += 10;
+                document.getElementById("character").style.left = X + 'px';
+            }
+
+            else if (keycode == 90) {
+                if (item[0] > 0) {
+                    item[0]--;
+                    delete_every_ball();
+                }
+            }
+
+            else if (keycode == 65 && dungeonEnter == 1) {
+                attack();
+                var x = event.clientX;
+                var y = event.clientY;
+                document.getElementById("ta").style.left = event.clientX - 200;
+                document.getElementById("ta").style.top = event.clientY - 50;
+                document.getElementById("ta").style.display = "block"
+                document.getElementById("d00").src = "./resource/img/dungeon/d0" + monster_id + ".png";
+
+                setTimeout(function () {
+                    document.getElementById("ta").style.display = "none";
+
+                    document.getElementById("d00").src = "./resource/img/dungeon/d0" + monster_id + "t.png";
+                }, 100);
+            }
+
+        }
+
+
+
+        function base64Encode(str) {
+
+            var enc64list, dec64list;
+            enc64list = new Array();
+            dec64list = new Array();
+
+            for (var i = 0; i < 26; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(65 + i);
+            }
+            for (var i = 0; i < 26; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(97 + i);
+            }
+            for (var i = 0; i < 10; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(48 + i);
+            }
+            enc64list[enc64list.length] = "+";
+            enc64list[enc64list.length] = "/";
+            for (var i = 0; i < 128; i++) {
+                dec64list[dec64list.length] = -1;
+            }
+            for (var i = 0; i < 64; i++) {
+                dec64list[enc64list[i].charCodeAt(0)] = i;
+            }
+
+            var c, d, e, end = 0;
+            var u, v, w, x;
+            var ptr = -1;
+            var input = str.split("");
+            var output = "";
+            while (end == 0) {
+                c = (typeof input[++ptr] != "undefined") ? input[ptr].charCodeAt(0) : ((end = 1) ? 0 : 0);
+                d = (typeof input[++ptr] != "undefined") ? input[ptr].charCodeAt(0) : ((end += 1) ? 0 : 0);
+                e = (typeof input[++ptr] != "undefined") ? input[ptr].charCodeAt(0) : ((end += 1) ? 0 : 0);
+                u = enc64list[c >> 2];
+                v = enc64list[(0x00000003 & c) << 4 | d >> 4];
+                w = enc64list[(0x0000000F & d) << 2 | e >> 6];
+                x = enc64list[e & 0x0000003F];
+                if (end >= 1) {
+                    x = "=";
+                }
+                if (end == 2) {
+                    w = "=";
+                }
+                if (end < 3) {
+                    output += u + v + w + x;
+                }
+            }
+            var formattedOutput = "";
+            var linelength = 76;
+            while (output.length > linelength) {
+                formattedOutput += output.substring(0, linelength) + "\n";
+                output = output.substring(linelength);
+            }
+            formattedOutput += output;
+            return formattedOutput;
+
+        }
+
+
+        function base64Decode(str) {
+
+            var enc64list, dec64list;
+            enc64list = new Array();
+            dec64list = new Array();
+
+            for (var i = 0; i < 26; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(65 + i);
+            }
+            for (var i = 0; i < 26; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(97 + i);
+            }
+            for (var i = 0; i < 10; i++) {
+                enc64list[enc64list.length] = String.fromCharCode(48 + i);
+            }
+            enc64list[enc64list.length] = "+";
+            enc64list[enc64list.length] = "/";
+            for (var i = 0; i < 128; i++) {
+                dec64list[dec64list.length] = -1;
+            }
+            for (var i = 0; i < 64; i++) {
+                dec64list[enc64list[i].charCodeAt(0)] = i;
+            }
+
+            var c = 0, d = 0, e = 0, f = 0, i = 0, n = 0;
+            var input = str.split("");
+            var output = "";
+            var ptr = 0;
+            do {
+                f = input[ptr++].charCodeAt(0);
+                i = dec64list[f];
+                if (f >= 0 && f < 128 && i != -1) {
+                    if (n % 4 == 0) {
+                        c = i << 2;
+                    } else if (n % 4 == 1) {
+                        c = c | (i >> 4);
+                        d = (i & 0x0000000F) << 4;
+                    } else if (n % 4 == 2) {
+                        d = d | (i >> 2);
+                        e = (i & 0x00000003) << 6;
+                    } else {
+                        e = e | i;
+                    }
+                    n++;
+                    if (n % 4 == 0) {
+                        output += String.fromCharCode(c) +
+                            String.fromCharCode(d) +
+                            String.fromCharCode(e);
+                    }
+                }
+            }
+            while (typeof input[ptr] != "undefined");
+            output += (n % 4 == 3) ? String.fromCharCode(c) + String.fromCharCode(d) :
+                ((n % 4 == 2) ? String.fromCharCode(c) : "");
+            return output;
+        }
+
+        function smith() {
+            document.getElementById("smith").style.display = 'block';
+            setTimeout(function () {
+                document.getElementById("smith").src = "./resource/img/ui/1.png";
+                setTimeout(function () {
+                    document.getElementById("smith").src = "./resource/img/ui/2.png";
+                    setTimeout(function () {
+                        document.getElementById("smith").src = "./resource/img/ui/3.png";
+                        setTimeout(function () {
+                            document.getElementById("smith").src = "./resource/img/ui/4.png";
+                            setTimeout(function () {
+                                document.getElementById("smith").src = "./resource/img/ui/5.png";
+                                setTimeout(function () {
+                                    document.getElementById("smith").style.display = 'none';
+                                    document.getElementById("smith").src = "./resource/img/ui/0.png";
+                                }, 300);
+                            }, 300);
+                        }, 300);
+                    }, 300);
+                }, 300);
+
+
+            }, 300);
+        }
+        function drop_item() {
+
+
+            if (monster.hp <= 0 && myInv < inventoryMax) {
+
+
+
+                monster.hp = monster.maxHp;
+                dungeonEnter = 0;
+
+                if (monster.id != 0) {
+                    alert("승리!");
+                }//
+
+                if (monster.id == 7) {
+                    monster_id = 8;
+                    dungeon();
+                    return 0
+                }//
+
+                text = '';
+
+
+                if (monster.id == 1) {
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.8) {
+                        mat[0]++;
+                        text += "[모운의 증표]를 획득 했다.";
+                        myInv++;
+
+                    }
+                    if (tempPerc > 0.75) {
+                        mat[5]++;
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                    }
+                    else {
+                        text = '';
+                    }
+                } // 모운
+
+
+                else if (monster.id == 2) {
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.81) {
+
+                        text += "[달인의 지푸라기]를 획득 했다.";
+                        myInv++;
+                        mat[1]++;
+                    }
+                    if (tempPerc > 0.74) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    }
+                    else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 0) {
+                    var tempPerc = Math.random();
+                    var tempGold = Math.random() * 50000;
+                    gold += Math.floor(tempGold);
+                    heo += 2;
+                    monsters[0].maxHp = 1000 + heo;
+                }
+
+                else if (monster.id == 3) {
+                    irusil_first = 0;
+                    iru = 0;
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.82) {
+
+                        text += "[이루실의 서림]을 획득 했다.";
+                        myInv++;
+                        mat[2]++;
+                    }
+                    if (tempPerc > 0.73) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    } else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 4) {
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.83) {
+
+                        text += "[심판자의 재]를 획득 했다.";
+                        myInv++;
+                        mat[3]++;
+                    }
+                    if (tempPerc > 0.72) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    } else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 5) {
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.84) {
+
+                        text = "[볼드의 결정조각]을 획득 했다.";
+                        myInv++;
+                        mat[4]++;
+                    }
+                    if (tempPerc > 0.72) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    } else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 6) {
+                    var tempPerc = Math.random();
+                    if (tempPerc > 0.85) {
+
+                        text = "[무희의 천 조각]을 획득 했다.";
+                        myInv++;
+                        mat[6]++;
+                    }
+                    if (tempPerc > 0.71) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    } else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 8) {
+
+                    var tempPerc = Math.random();
+
+                    if (tempPerc > 0.80) {
+
+                        text = "[금 반지]를 획득 했다.";
+                        myInv++;
+                        mat[7]++;
+                    }
+
+                    if (tempPerc > 0.69) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    }
+
+                    else {
+                        text = '';
+                    }
+                }
+
+                else if (monster.id == 9) {
+
+                    var tempPerc = Math.random();
+
+                    if (tempPerc > 0.86) {
+
+                        text = "[프리데의 심장]을 획득 했다.";
+                        myInv++;
+                        mat[8]++;
+                    }
+
+                    if (tempPerc > 0.68) {
+
+                        text += "<br>[쐐기석]을 획득 했다.";
+                        myInv++;
+                        mat[5]++;
+                    }
+
+                    else {
+                        text = '';
+                    }
+                }
+                if (text != '') {
+                    dialog();
+                    dialogText();
+                }
+                exit();
+            }//인벤토리 있을 때
+
+            else if (monster.hp < 0 && myInv >= inventoryMax) {
+                monster.hp = monster.maxHp;
+                exit();
+                text += "<br>인벤토리가 꽉 찼습니다.";
+            }//인벤 꽉참
+
+
+
+
+
+
+        } // 함수 끝
+
+
+        function attack() {
+
+            document.getElementById("damage").style.display = "block";
+            setTimeout(function () { document.getElementById("damage").style.display = "none"; }, 100);
+
+            //character_pos(e);
+            die_function();
+            drop_item();
+
+            if (mp == 1) { // 마우스 위치 인식
+
+                if (cl == 1 && mr != 1) { // 클릭과 무력화인식
+
+                    var tempAtk = 0.8 + Math.random() * 0.1;
+                    var tempAtt = 20 * Math.floor(mugiNow.atk * tempAtk)
+
+
+                    if (monster.id == 4 && myNowGaru == 1) { monster.hp -= tempAtt + 120 * what_gang; }
+                    else if (monster.id == 4 && myNowGaru == 2) { tempAtt += 120 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 2 && myNowGaru == 1) { tempAtt += 220 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 2 && myNowGaru == 2) { tempAtt += 230 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 3 && myNowGaru == 1) { tempAtt += 200 * what_gang; monster.hp -= tempAtt; }
+                    else { monster.hp -= tempAtt; } // 속성 데미지
+
+
+                    document.getElementById("damage").innerHTML = "<font color=red>-" + Math.floor(tempAtt) + "</font>";
+
+
+                } else {
+
+                    var tempAtk = 0.9 + Math.random() * 0.1;
+                    var tempAtt = Math.floor(mugiNow.atk * tempAtk)
+
+                    if (monster.id == 4 && myNowGaru == 1) { monster.hp -= tempAtt + 120 * what_gang; }
+                    else if (monster.id == 4 && myNowGaru == 2) { tempAtt += 120 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 2 && myNowGaru == 1) { tempAtt += 220 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 2 && myNowGaru == 2) { tempAtt += 230 * what_gang; monster.hp -= tempAtt; }
+                    else if (monster.id == 3 && myNowGaru == 1) { tempAtt += 200 * what_gang; monster.hp -= tempAtt; }
+                    else { monster.hp -= tempAtt; }
+
+
+                    document.getElementById("damage").innerHTML = "<font color=red>-" + Math.floor(tempAtt) + "</font>";
+
+                }//클릭,무력화 인식
+
+
+
+            }//마우스위치
+        } // attack 함수 닫기
+
+
+
+        function goShop() {
+            document.getElementById("base").style.display = 'none';
+            document.getElementById("dungeon").style.display = 'none';
+            document.getElementById("shop").style.display = 'block';
+        }
+
+        function exit() {
+            document.body.background = "./resource/img/ui/bg2.png"
+            document.getElementById("base").style.display = 'block';
+            document.getElementById("message_popup").style.display = "none";
+            document.getElementById("dungeon").style.display = 'none';
+            document.getElementById("shop").style.display = 'none';
+            dungeonEnter = 0;
+            die_pattern1 = 0;
+            die_pattern2 = 0;
+            die_pattern3 = 0;
+            speed = 30;
+            document.getElementById("die_patt1").style.display = "none";
+            document.getElementById("die_patt2").style.display = "none";
+            document.getElementById("die_patt3").style.display = "none";
+            go_ball_stop = 1;
+            delete_every_ball();
+            monster.hp = monster.maxHp;
+            muh = 0;
+            muhee_first = 0;
+            iru = 0;
+            gud = 0;
+            gunda_first = 0;
+            irusil_first = 0;
+            mr = 0;
+        }
+
+
+        function dungeon() {
+
+            if (monster_id == 3 || monster_id == 5) { document.body.background = "./resource/img/ui/bg12.png"; }
+
+
+            if (what_gang > 38) { item[0] = 1; }
+            go_ball_stop = 0;
+            document.getElementById("d00").src = "./resource/img/dungeon/d0" + monster_id + "t.png";
+            document.getElementById("ball_table").style.display = 'block';
+            document.getElementById("character").style.display = 'block';
+            dungeonEnter = 1;
+
+
+            document.getElementById("character").style.left = 500 + 'px';
+            document.getElementById("character").style.top = 500 + 'px';
+            setInterval(function () {
+                if (dungeonEnter == 1) {
+
+
+
+                }
+
+            }, 10);
+
+            monster = monsters[monster_id];
+            document.getElementById("monster_name").innerHTML = "<font size=4em><b>" + monster.name + "</b></font>";
+            document.getElementById("base").style.display = 'none';
+            document.getElementById("dungeon").style.display = 'block';
+
+            if (monster_id == 1) {
+                text = "여행자인가.";
+                dialog();
+                dialogText();
+
+            }
+            else if (monster_id == 2) {
+                text = " ... ";
+                dialog();
+                dialogText();
+
+            }
+            else if (monster_id == 3) {
+                text = " 이 골짜기에서 얼어붙지 않는 것은 없다. ";
+                dialog();
+                dialogText();
+
+            }
+            else if (monster_id == 4) {
+                text = " 또다른 재의 귀인이 될 수 있기를 바란다. ";
+                dialog();
+                dialogText();
+
+            }
+            else if (monster_id == 5) {
+                text = " 이 골짜기에서 살아남을 수 있을까? ";
+                dialog();
+                dialogText();
+
+            }
+
+
+        }
+
+
+        function ganghwa() {
+
+            document.getElementById("button1").src = "./resource/img/button/0a.png";
+
+            setTimeout(function () {
+                document.getElementById("button1").src = "./resource/img/button/0.png";
+            }, 500);
+
+
+            var tempPerc = Math.random();
+
+            smith();
+
+
+            setTimeout(function () {
+
+                if (what_gang < 18 && gold > 10000 * 2 * (what_gang + 1)) {
+
+                    if (tempPerc > 0.1 + what_gang * 0.01) {
+
+                        alert("강화성공!");
+                        what_gang++;
+                        gold -= 10000 * 2 * what_gang
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+
+                    } else {
+
+                        alert("강화실패!");
+                        what_gang--;
+
+                        if (what_gang == -1) {
+
+                            what_gang = 0;
+
+                        } else {
+
+                            mugiNow = mugi[what_gang];
+                            document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        gold -= 10000 * 2 * what_gang
+
+                    }
+                }//1~18강까지
+
+
+                else if (what_gang == 18) {
+                    if (mat[0] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[0]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 그레이트->모운
+
+                else if (what_gang < 24) {
+                    if (mat[5] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 24강까지
+
+                else if (what_gang == 24) {
+                    if (mat[1] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[1]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 모운->타도
+
+                else if (what_gang < 28) {
+                    if (mat[5] > 1) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.011) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5] -= 2;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 28강까지 확률
+
+                else if (what_gang == 28) {
+                    if (mat[2] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.012) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[2]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 타도->이루실
+
+                else if (what_gang < 38) {
+
+                    if (mat[5] > 2) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.013) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5] -= 3;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 38강까지
+
+                else if (what_gang == 38) {
+                    if (mat[3] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.014) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[3]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 이루실->나선검
+
+                else if (what_gang < 46) {
+                    if (mat[5] > 3) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.013) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5] -= 4;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 46강까지
+
+                else if (what_gang == 46) {
+                    if (mat[4] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[4]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 이루실->나선검
+
+                else if (what_gang < 60) {
+                    if (mat[5] > 4) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.012) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5] -= 5;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } //60강까지
+
+                else if (what_gang == 60) {
+                    if (mat[6] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.012) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[6]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 볼드월도->무희의쌍마검
+
+                else if (what_gang < 63) {
+
+                    if (mat[5] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 63강까지
+
+                else if (what_gang == 63) {
+
+                    if (mat[7] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[7]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 무희쌍마검->고리기사의 대검
+
+                else if (what_gang < 75) {
+
+                    if (mat[5] > 5) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[5] -= 6;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 76강까지
+
+                else if (what_gang == 75) {
+
+
+
+
+                    var choice = prompt("토마스의 불꽃이 기운을 뿜는다. 만져볼까? [Y/N]");
+
+                    if (choice == 'Y') {
+
+                        if (tempPerc > 0.8 && mat[9] > 0) {
+                            text = '토마스의 기운이 스며든다.';
+                            dialog();
+                            mat[9]--;
+                            what_gang++;
+                            dialogText();
+
+                        } else {
+                            text = '아무일도...';
+                            dialog();
+                            mat[9]--;
+                            dialogText();
+
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+
+                    }
+
+                    else {
+                        if (mat[5] > 6) {
+
+                            if (tempPerc > 0.1 + what_gang * 0.02) {
+                                alert("강화성공!");
+                                what_gang += 2;
+                            } else {
+                                alert("강화실패!");
+                                what_gang -= 2;
+                            }
+
+                            mugiNow = mugi[what_gang];
+                            document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                            mat[5] -= 7;
+
+                        } else {
+                            alert("재료가 부족합니다.");
+                        }
+                    }
+
+
+
+                } // 토마스의 지팡이
+
+                else if (what_gang < 78) {
+
+                    if (mat[5] > 6) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[6] -= 7;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 78강까지
+
+                else if (what_gang == 78) {
+
+                    if (mat[8] > 0) {
+
+                        if (tempPerc > 0.1 + what_gang * 0.02) {
+                            alert("강화성공!");
+                            what_gang++;
+                        } else {
+                            alert("강화실패!");
+                            what_gang--;
+                        }
+
+                        mugiNow = mugi[what_gang];
+                        document.getElementById("mugi").src = "./resource/img/mugi/" + mugiNow.id + ".png";
+                        mat[8]--;
+
+                    } else {
+                        alert("재료가 부족합니다.");
+                    }
+                } // 프리데의 낫
+
+                writeFile(id, what_gang, ps, mat, gold, inventoryMax, myInv, heo);
+                pT = password;
+
+            }, 1600);
+        }
+
+
+
+
+
+        setInterval(function () {
+
+
+            document.getElementById("mugi_name").innerHTML = mugiNow.name + "[+" + what_gang + "]";
+
+            if (item[0] > 0) {
+                document.getElementById("skill").innerHTML = "<font color=green>스킬[Z]ON</font>";
+            } else {
+                document.getElementById("skill").innerHTML = "<font color=black>스킬[Z]OFF</font>";
+            }
+
+            document.getElementById("mugi_atk").innerHTML = "공격력: " + mugiNow.atk;
+            document.getElementById("mugi_detail").innerHTML = "설명: " + mugiNow.detail;
+            document.getElementById("monster_hp").innerHTML = "<font color=red>" + monster.hp + "/" + monster.maxHp + "</font>";
+
+            document.getElementById("mat0").innerHTML = "<font color=red>[모운의 증표] " + mat[0] + "</font>";
+            document.getElementById("mat1").innerHTML = "<font color=brown>[달인의 지푸라기] " + mat[1] + "</font>";
+            document.getElementById("mat2").innerHTML = "<font color=skyBlue>[이루실의 서림] " + mat[2] + "</font>";
+            document.getElementById("mat3").innerHTML = "<font color=purple>[심판자의 재] " + mat[3] + "</font>";
+            document.getElementById("mat4").innerHTML = "<font color=blue>[볼드의 결정조각] " + mat[4] + "</font>";
+            document.getElementById("mat5").innerHTML = "<font color=black>[쐐기석] " + mat[5] + "</font>";
+            document.getElementById("mat6").innerHTML = "<font color=orange>[무희의 천 조각] " + mat[6] + "</font>";
+            document.getElementById("mat7").innerHTML = "<font color=yellow>[금 반지] " + mat[7] + "</font>";
+            document.getElementById("mat8").innerHTML = "<font color=iceBlue>[여왕 프리데의 심장] " + mat[8] + "</font>";
+            document.getElementById("mat9").innerHTML = "<font color=darkRed>[여행자 토마스의 불꽃조각] " + mat[9] + "</font>";
+            document.getElementById("gold").innerHTML = "<font color=Gold>[골드] " + gold + "</font>";
+            document.getElementById("invent").innerHTML = "<font color=black>" + myInv + "/" + inventoryMax + "</font>";
+
+            if (what_gang < 18) { document.getElementById("mat_detail").innerHTML = "<b>재료:</b> 골드 " + 10000 * 2 * (what_gang + 1); }
+            else if (what_gang == 18) { document.getElementById("mat_detail").innerHTML = "[모운의 증표]x1"; }
+            else if (what_gang < 24) { document.getElementById("mat_detail").innerHTML = "[쐐기석]x1"; }
+            else if (what_gang == 24) { document.getElementById("mat_detail").innerHTML = "[달인의 지푸라기]x1"; }
+            else if (what_gang < 28) { document.getElementById("mat_detail").innerHTML = "[쐐기석]x2"; }
+            else if (what_gang == 28) { document.getElementById("mat_detail").innerHTML = "[이루실의 서림]x1"; }
+            else if (what_gang < 39) { document.getElementById("mat_detail").innerHTML = "[쐐기석]x3"; }
+            else if (what_gang == 39) { document.getElementById("mat_detail").innerHTML = "[심판자의 재]x1"; }
+            else if (what_gang < 46) { document.getElementById("mat_detail").innerHTML = "[쐐기석]x4"; }
+            else if (what_gang == 46) { document.getElementById("mat_detail").innerHTML = "[볼드의 결정조각]x1"; }
+            else if (what_gang > 60) { document.getElementById("mat_detail").innerHTML = "[쐐기석]x6 또는 ?"; }
+            else if (what_gang == 60) { document.getElementById("mat_detail").innerHTML = "?"; }
+            else if (what_gang > 63) { document.getElementById("mat_detail").innerHTML = "?"; }
+            else if (what_gang == 63) { document.getElementById("mat_detail").innerHTML = ""; }
+            myInv = mat[0] + mat[1] + mat[2] + mat[3] + mat[4] + mat[5] + mat[6] + mat[7] + mat[8] + mat[9];
+
+            die_function();
+            up_dieOr();
+            //
+
+            if (parseFloat(document.getElementById("character").style.left) > 900) {
+                var Xx = parseFloat(document.getElementById("character").style.left);
+                Xx = 850;
+                document.getElementById("character").style.left = Xx + 'px';
+            }
+
+        }, 10);
+
+
+
+
+
+
+        setInterval(function () {
+
+            var cross = Math.random();
+
+            if (monster.id == 3 && monster.hp < 0.2 * monster.maxHp && irusil_first == 0) {
+                monster_max_ball = 100;
+                var irusil_text = setInterval(function () {
+                    delete_every_ball()
+                }, 10);
+
+                irusil_first = 1;
+                iru = 1;
+                mr = 1;
+                text = '네 놈만은 얼어붙지 않길 바라겠다.';
+                dialog();
+                dialogText();
+                attack_pattern1()
+
+                setTimeout(function () {
+                    clearInterval(irusil_text);
+                }, 2000);
+            }
+
+
+
+            if (monster.id == 4 && monster.hp < 0.3 * monster.maxHp && gunda_first == 0) {
+                monster_max_ball = 150;
+                var gunda_text = setInterval(function () {
+                    delete_every_ball()
+                }, 10);
+                attack_pattern2()
+                gunda_first = 1;
+                gud = 1;
+                speed = 20;
+                mr = 1;
+                text = '...';
+                dialog();
+                dialogText();
+                document.body.bgColor = "black"
+                var heal = setInterval(function () {
+                    if (monster.hp < monster.maxHp) {
+                        monster.hp += 10000
+                    }
+
+                    if (document.getElementById("dungeon").style.display == "none") {
+                        clearInterval(heal);
+                    }
+
+                }, 100);
+
+
+                setTimeout(function () {
+                    clearInterval(gunda_text);
+                }, 2000);
+
+            }
+
+
+            if (monster.id == 6 && monster.hp < 0.7 * monster.maxHp && muhee_first == 0) {
+                monster_max_ball = 100;
+                var muhee_text = setInterval(function () {
+                    delete_every_ball()
+                }, 10);
+
+                muhee_first = 1;
+                muh = 1;
+                speed = 15;
+                mr = 0;
+                text = '...';
+                dialog();
+                dialogText();
+
+                setTimeout(function () {
+                    clearInterval(muhee_text);
+                }, 2000);
+            }
+
+
+
+
+            if (die_pattern1 == 0) {
+                clearTimeout(atP1);
+            }
+            if (die_pattern2 == 0) {
+                clearTimeout(atP2);
+            }
+            if (die_pattern3 == 0) {
+                clearTimeout(atP3);
+            }
+
+            if (go_ball_stop == 0) {
+                add_ball();
+                func_ball();
+
+
+                if (monster.id == 3 && monster.hp < 0.2 * monster.maxHp && cross > 0.99 && die_pattern1 == 0) {
+                    attack_pattern1();
+                    cross = Math.random();
+                } else if (monster.id == 4 && monster.hp < 0.3 * monster.maxHp && cross > 0.99 && die_pattern2 == 0) {
+
+                    attack_pattern2();
+                    cross = Math.random();
+                } else if (monster.id == 1 && monster.hp < 0.1 * monster.maxHp && cross > 0 && die_pattern3 == 0) {
+
+                    attack_pattern3();
+                    cross = Math.random();
+                } else if (monster.id == 2 && cross > 0 && monster.hp < 0.15 * monster.maxHp && die_pattern3 == 0) {
+
+                    attack_pattern3();
+                    cross = Math.random();
+                }
+
+            }
+
+        }, 30);
+
+        var cooltime = 100000;
+
+        setInterval(function () {
+
+            if (item[0] != 1 && what_gang > 38) { item[0]++; }
+
+        }, cooltime);
+
+
+
+
+
+
+
+        /*
+
+             intervals = setInterval(function t() {
+            if(typeof console !== 'undefined' && typeof console.log !== 'undefined') {
+            alert("F12 사용으로인해 게임 진행이 제한 됩니다");
+            window.close();
+            what_gang =0;
+            }
+
+        }, 1000);
+        */
+
+        setInterval(function (e) {
+            die_function();
+            up_dieOr();
+            //character_pos(e);
+        }, 1);
+
+    </script>
+</body>
